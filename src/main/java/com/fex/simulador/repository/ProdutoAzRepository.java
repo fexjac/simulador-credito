@@ -5,6 +5,7 @@ import io.agroal.api.AgroalDataSource;
 import io.quarkus.agroal.DataSource;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -17,6 +18,7 @@ public class ProdutoAzRepository {
     @DataSource("mssql")
     AgroalDataSource dsMssql;
 
+    @Transactional(Transactional.TxType.NOT_SUPPORTED)
     public Optional<ProdutoAz> findMatching(BigDecimal valor, int prazoMeses) {
         final String sql = """
             SELECT TOP 1 CO_PRODUTO, NO_PRODUTO, PC_TAXA_JUROS, NU_MINIMO_MESES, NU_MAXIMO_MESES, VR_MINIMO, VR_MAXIMO
