@@ -1,6 +1,7 @@
 package com.fex.simulador.resource;
 
 import com.fex.simulador.dto.ProdutoDiaResponseDTO;
+import com.fex.simulador.dto.ProdutoDiaResumoResponseDTO;
 import com.fex.simulador.dto.ProdutoDiaSerieResponseDTO;
 import com.fex.simulador.service.AnalyticsService;
 import jakarta.inject.Inject;
@@ -25,7 +26,14 @@ public class AnalyticsResource {
         return analytics.porDia(data);
     }
 
-
+    @GET
+    @Path("/volumes-dia")
+    public ProdutoDiaResumoResponseDTO volumesPorDia(@QueryParam("data") String dataStr) {
+        java.time.LocalDate data = (dataStr == null || dataStr.isBlank())
+                ? java.time.LocalDate.now()
+                : java.time.LocalDate.parse(dataStr);
+        return analytics.resumoPorDia(data);
+    }
     @GET
     @Path("/produtos-dia/serie")
     public ProdutoDiaSerieResponseDTO serie(@QueryParam("inicio") String inicioStr,
@@ -35,4 +43,5 @@ public class AnalyticsResource {
         LocalDate fim    = (fimStr == null || fimStr.isBlank())       ? hoje              : LocalDate.parse(fimStr);
         return analytics.serie(inicio, fim);
     }
+
 }
