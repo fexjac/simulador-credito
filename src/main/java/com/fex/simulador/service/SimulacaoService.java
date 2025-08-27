@@ -9,6 +9,7 @@ import com.fex.simulador.model.local.SimulacaoEntity;
 import com.fex.simulador.repository.ProdutoAzRepository;
 import com.fex.simulador.repository.local.ParcelaRepository;
 import com.fex.simulador.repository.local.ProdutoLocalRepository;
+import com.fex.simulador.event.SimulationEventPublisher;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -24,6 +25,7 @@ public class SimulacaoService {
     @Inject ProdutoLocalRepository produtoLocalRepo;
     @Inject ParcelaRepository parcelaRepo;
     @Inject AmortizationService amort;
+    @Inject SimulationEventPublisher publisher;
 
     @Transactional
     public SimulacaoResponse simular(SimulacaoRequest req) {
@@ -84,6 +86,7 @@ public class SimulacaoService {
         resp.setDescricaoProduto(produto.getNoProduto());
         resp.setTaxaJuros(produto.getTaxaJuros());
         resp.setResultadoSimulacao(List.of(sac, price));
+        publisher.publish(resp);
         return resp;
     }
 
