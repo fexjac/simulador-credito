@@ -1,4 +1,4 @@
-package com.fex.simulador.model;
+package com.fex.simulador.model.az;
 
 import java.math.BigDecimal;
 

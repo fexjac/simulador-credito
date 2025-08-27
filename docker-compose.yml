@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    container_name: simulador-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${PG_USER:-postgres}
+      POSTGRES_PASSWORD: ${PG_PASS:-postgres}
+      POSTGRES_DB: ${PG_DB:-simulador}
+      TZ: America/Sao_Paulo
+    ports:
+      - "5433:5432"   # porta externa 5433, evita conflito com Postgres local
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U ${PG_USER:-postgres} -d ${PG_DB:-simulador}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: simulador-api
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      TZ: America/Sao_Paulo
+
+      # ===== Postgres (default datasource em application.properties) =====
+      PG_URL: jdbc:postgresql://db:5433/${PG_DB:-simulador}
+      PG_USER: ${PG_USER:-postgres}
+      PG_PASS: ${PG_PASS:-postgres}
+
+      # ===== MSSQL (Azure) - somente consulta =====
+      MSSQL_JDBC_URL: ${MSSQL_JDBC_URL}
+      MSSQL_USERNAME: ${MSSQL_USERNAME}
+      MSSQL_PASSWORD: ${MSSQL_PASSWORD}
+
+      # ===== Event Hubs =====
+      EVENTHUBS_CONN: ${EVENTHUBS_CONN}
+      EVENTHUBS_NAME: ${EVENTHUBS_NAME:-simulacoes}
+      EVENTHUBS_ENABLED: ${EVENTHUBS_ENABLED:-true}
+
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+volumes:
+  pgdata:

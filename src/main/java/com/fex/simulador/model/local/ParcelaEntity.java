@@ -13,7 +13,7 @@ public class ParcelaEntity extends PanacheEntity {
     public SimulacaoEntity simulacao;
 
     @Column(name = "tipo", nullable = false, length = 10)
-    public String tipo; // "SAC" ou "PRICE"
+    public String tipo;
 
     @Column(name = "numero", nullable = false)
     public int numero;

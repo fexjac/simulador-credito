@@ -2,7 +2,7 @@ package com.fex.simulador.service;
 
 import com.fex.simulador.dto.*;
 import com.fex.simulador.exception.NegocioException;
-import com.fex.simulador.model.ProdutoAz;
+import com.fex.simulador.model.az.ProdutoAz;
 import com.fex.simulador.model.local.ParcelaEntity;
 import com.fex.simulador.model.local.ProdutoLocal;
 import com.fex.simulador.model.local.SimulacaoEntity;

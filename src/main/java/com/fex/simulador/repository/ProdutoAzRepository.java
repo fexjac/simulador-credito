@@ -1,6 +1,6 @@
 package com.fex.simulador.repository;
 
-import com.fex.simulador.model.ProdutoAz;
+import com.fex.simulador.model.az.ProdutoAz;
 import io.agroal.api.AgroalDataSource;
 import io.quarkus.agroal.DataSource;
 import jakarta.enterprise.context.ApplicationScoped;
